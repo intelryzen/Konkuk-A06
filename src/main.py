@@ -1,4 +1,6 @@
 import copy
+from prompt import *
+from model import *
 
 # 전역 변수
 foodFilePath, stockFilePath = 'files/food.txt', 'files/stock.txt'
@@ -8,6 +10,7 @@ stockDict = {}
 
 
 def main():
+    test()
     print("시작")
 
 
