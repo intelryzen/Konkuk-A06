@@ -8,7 +8,7 @@ import basket
 
 class Food:
     """
-    여기에 Food 클래스 정의
+    예시로 만든 Food 클래스
     """
 
     def __init__(self, name, price):
@@ -32,5 +32,6 @@ if __name__ == "__main__":
     basket1.add(SeasonedChicken, 3)
     basket1.add(BonelessChicken, 4)
     basket1.add(BSCHicken, 5)
-    print(basket1.basket)
+    for i in basket1.basket:
+        print(i[0].name, i[1])
     print(basket1.totalPrice)
