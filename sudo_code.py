@@ -109,10 +109,10 @@ def main():
             date = getDate()
             if(checkDate(date)==1):  # 올바른 날짜 입력시까지 입력 계속 받음
                 break;
-            
+        user_id = input() # 유저아이디 입력
+        
         while True:  # 모드 프롬프트
-            user_id = input() # 유저아이디 입력
-            basket = ShoppingBasket() # user_id로 인자로 basket 생성
+            basket = ShoppingBasket() # user_id, date로 인자로 basket 생성
             
             ret1 = chooseMode()
             if ret1 == 2:  # 종료 선택시
