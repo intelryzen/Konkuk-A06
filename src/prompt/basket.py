@@ -1,129 +1,54 @@
-"""
-231022 원규연
+from model import *
 
-update foodlist 
-"""
-
-"""
-class Food:
-    def __init__(self, no, foodTypeNo, name, price, recipe, orderable):
-        self.no = no  # 음식 고유번호
-        self.foodTypeNo = foodTypeNo  # foodType을 참조하는 번호
-        self.name = name  # 음식 이름
-        self.price = price  # 음식 가격
-        self.recipe = recipe  # stock의 재고번호와 갯수로 구성된 딕셔너리
-        self.orderable = orderable  # 주문 가능한 갯수
-    0 생닭
-    1 순살
-    2 기름
-    3 양념
-
-    후라이드 = {0: 1, 2: 1}
-    양념 = {0: 1, 1: 1, 2: 1}
-    뼈없는 = {1: 1, 2: 1}
-    순살 = {1: 1, 2: 1, 3: 1}
-"""
-import food
+# 1(주문 가능한 음식이 하나도 없거나 뒤로가기 선택시) 또는 0 반환
 
 
-FriedChicken = food.Food(0, 1, "후라이드 치킨", 20000, {0: 1, 2: 1}, 0)
-SeasonedChicken = food.Food(1, 1, "양념 치킨", 21000, {0: 1, 2: 1, 3: 1}, 0)
-BonelessChicken = food.Food(2, 1, "뼈없는 치킨", 22000, { 1: 1, 2: 1}, 0)
-BSCHicken = food.Food(3, 1, "순살 양념 치킨", 23000, {1: 1, 2: 1, 3:1}, 0)
-
-foodList = [FriedChicken, SeasonedChicken, BonelessChicken, BSCHicken]
-stockDict = {0: 10, 1: 5, 2: 10, 3: 10}
-def updateFoodList():
-    """
-    전역 변수인 foodList 각각의 Food 객체의 recipe를 읽어 stockDict 의 재고 목록을 토대로 
-    해당 음식이 주문 가능하다면 주문 가능한 음식의 수량을,
-    더이상 주문 불가능하다면 0을 각 객체의 orderable 에 저장한다.
-
-    foodType = {0: '메인메뉴', 1: '사이드메뉴', 2: '음료수'}
-    foodList = []
-    stockDict = {}
-
-    """
-    global foodList
-    global stockDict
-
-    for food in foodList:
-        food.orderable = 0
-        enableNumber = 0
-        leastNumber = 0
-        
-        for recipeKey in food.recipe.keys():
-            leastNumber = stockDict[recipeKey] // food.recipe[recipeKey]
-            if stockDict[recipeKey] == 0:
-                enableNumber = 0
-                break
-            if enableNumber == 0 or leastNumber < enableNumber:
-                enableNumber = leastNumber
-
-        food.orderable = enableNumber
+def updateStockDict(food, number):
+    from main import stockDict
 
 
-
-
-
-
-class ShooppingBasket:
-    
-    """
-    여기에 ShoppingBasket 클래스 정의
-    """
-
-    def __init__(self):
-        """
-        items는 장바구니에 담긴 상품 목록
-        """
-        self.basket = [] # [음식,수량]을 원소로 가지는 리스트
-        self.totalPrice = 0 # basket에 들어있는 음식의 총 가격합임. 값이 0 이면 장바구니가 비었음을 의미함.
-        
-        # self.Food = Food
-
-    def add(self, food, quantity):
-        """
-        장바구니에 음식을 추가함
-        """
-        self.basket.append([food, quantity])
-        self.totalPrice += food.price * quantity
-
-    def remove(self, food, quantity):
-        """
-        장바구니에서 음식을 삭제함
-        """
-        self.basket.remove([food, quantity])
-        self.totalPrice -= food.price * quantity
-
-if __name__ == "__main__":
-    print(stockDict)
-    for food in foodList:
-        print(food.name, food.orderable)
-    updateFoodList()
-
-    print(foodList[0].name, foodList[0].orderable)
-    print(foodList[1].name, foodList[1].orderable)
-    print(foodList[2].name, foodList[2].orderable)
-    print(foodList[3].name, foodList[3].orderable)
-
-    stockDict[0] = 1
-    print(stockDict)
-    updateFoodList()
-
-
-    print(foodList[0].orderable)
-    print(foodList[1].orderable)
-    print(foodList[2].orderable)
-    print(foodList[3].orderable)
-
-    stockDict[0] = 0
-
-    updateFoodList()
-    print(foodList[0].orderable)
-    print(foodList[1].orderable)
-    print(foodList[2].orderable)
-    print(foodList[3].orderable)
-
-    a = 0//5
-    print(a)
+def insertBasket(foodType, basketObject):
+    from main import foodList
+    # 해당 카테고리 음식이고 주문가능한 음식만 담김
+    category_foods = [
+        food for food in foodList if food.foodTypeNo == foodType and food.orderable > 0]
+    if len(category_foods) == 0:
+        print('주문 가능한 음식이 없습니다')
+        return 1
+    else:
+        # 주문 가능 음식 모두 출력
+        for index, food in enumerate(category_foods):
+            print(f"{index + 1}. {food.name}: {food.price} (가능 수량: {food.orderable})")
+        while True:
+            try:
+                user = input()
+                syntexChecker = PromptSyntaxChecker(user)
+                selected = syntexChecker.checkBasketSyntax()
+                # 뒤로가기
+                if (selected == 0):
+                    return 1
+                else:
+                    selectedFoodIndex = selected[0] - 1
+                    # 의미규칙 (선택한 음식)
+                    if 0 <= selectedFoodIndex and selectedFoodIndex < len(category_foods):
+                        # 사용자가 입력한 담은 수량
+                        selectedFoodAmount = selected[1]
+                        # 의미규칙 (담은 수량)
+                        if selectedFoodAmount <= 0:
+                            print("[오류] 입력한 수량이 0보다 같거나 작을 수 없습니다.")
+                        elif category_foods[selectedFoodIndex].orderable < selectedFoodAmount:
+                            print("[오류] 입력한 수량이 주문 가능 수량보다 많을 수 없습니다.")
+                        else:
+                            # 장바구니에 담음
+                            basketObject.basket.append(selected)
+                            updateStockDict(
+                                food=category_foods[selectedFoodIndex], number=selectedFoodAmount)
+                            # 장바구니에 담은 목록 출력
+                            basketObject.showBasket()
+                            return 0
+                    else:
+                        print("[오류] 해당되는 음식 번호를 정확히 입력하세요.")
+                    # 의미규칙 검사
+                    print('[오류] 0 부터 5 까지의 번호를 입력하세요.')
+            except Exception as e:
+                print(e)

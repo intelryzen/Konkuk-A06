@@ -1,47 +1,54 @@
-"""
-231024 원규연
 
-
-showMenu 를 호출하고 사용자의 입력을 받아 PromptSyntaxChecker.checkDefaultSyntex 를 호출하여 
-올바른 문법인지 확인하고 정상적인 문법(의미 규칙을 포함하며 내부에서 이를 검증함)이라면 최종 입력값을 반환한다.
-
-내부 반복문으로 정상적인 입력값을 반환할 때까지 해당 작업을 반복수행함.
-
-"""
+from model import *
 
 
 def showMenu():
-    """
-    0. 뒤로가기 또는 1. 메인메뉴 또는 2. 사이드메뉴 또는 3. 음료수 또는 4. 주문하기
-    """
-    print("0. 뒤로가기")
-    print("1. 메인메뉴")
-    print("2. 사이드메뉴")
-    print("3. 음료수")
-    print("4. 주문하기")
+    print(
+        '''0. 뒤로가기
+1. 메인메뉴
+2. 사이드메뉴
+3. 음료
+4. 장바구니
+5. 결제하기''')
 
+
+# 유저가 선택한 메뉴 번호 반환
 def chooseMenu():
-    showMenu()
-    menu = input()
-    # syntex = PromptSyntaxChecker.checkDefaultSyntex(menu)
-    # if syntex == True:
-    if menu == '1':
+    while True:
+        try:
+            showMenu()
+            user = input()
+            syntexChecker = PromptSyntaxChecker(user)
+            selected = syntexChecker.checkDefaultSyntax()
+            # 의미규칙 검사
+            if (0 <= selected and selected <= 5):
+                return selected
+            else:
+                print('[오류] 0 부터 5 까지의 번호를 입력하세요.')
+        except Exception as e:
+            print(e)
+
+# 0(결제 불가) 또는 1(결제 완료) 반환
+
+
+def payment(basketObject):
+    from main import foodList
+    if basketObject.totalPrice > 0:
+        for item in basketObject.basket:
+            # 음식 고유번호
+            index = item[0]
+            # 담은수량 고유번호
+            amount = item[1]
+            food = next((food for food in foodList if food.no == index), None)
+            # 사실상 None 일 경우 없음.
+            if food == None:
+                continue
+            else:
+                # 장바구니 아이템 출력
+                print(f"{food.name}: {amount}개")
+        print(f"총 금액 : {basketObject.totalPrice}")
+        print(f'결제가 완료되었습니다.')
         return 1
-    elif menu == '2':
-        return 2
-    elif menu == '3':
-        return 3
-    elif menu == '4':
-        return 4
-
-    elif menu == '0':
-        return 0
-    
     else:
-        chooseMenu()
-    
-    # else:
-    #     print(syntex)
-    #     chooseMenu()
-
-# def insertBasket
+        print("장바구니에 음식이 없습니다.")
+        return 0
