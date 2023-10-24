@@ -103,7 +103,7 @@ def main():
                     while True:  # 장바구니 프롬프트
                         updateFoodList()  # 주문 가능 음식 개수 수정
                         ret3 = insertBasket(ret2, basket)
-                        if ret3 == 1:  # 뒤로가기 또는 주문 가능 음식
+                        if ret3 == 1:  # 뒤로가기 또는 주문 가능 음식없으면
                             break
 
 

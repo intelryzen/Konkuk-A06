@@ -10,8 +10,13 @@ stockDict = {}
 
 
 def main():
-    test()
-    print("시작")
+    basket = ShoppingBasket()
+    value = chooseMenu()
+    if value == 5:
+        payment(basket)
+    # test()
+    # print("시작")
 
 
-main()
+if __name__ == "__main__":
+    main()

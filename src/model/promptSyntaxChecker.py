@@ -1,3 +1,6 @@
+from model.customError import MyCustomError
+
+
 class PromptSyntaxChecker:
     def __init__(self, inputValue):
         self.inputValue = inputValue
@@ -9,7 +12,7 @@ class PromptSyntaxChecker:
             # 문법에 맞지 않으면 MyCustomError를 발생시킬 수 있음
             return value
         except ValueError:
-            raise MyCustomError(f"Invalid syntax: {self.inputValue}")
+            raise MyCustomError(f"[오류] 문법에 맞지 않은 입력입니다.")
 
     def checkBasketSyntax(self):
         try:
