@@ -66,13 +66,23 @@ def getDate():
 
 def getId():
     #여기에 아이디 입력
+    pass
 
 def checkDate():
     #의미 규칙에 맞는 지 확인하는 함수
+    pass
     
 def showBasket():
-    #현재 장바구니 출력해주는 함수
+    #현재 장바구니 출력해주고 메뉴 선택하는 함수
+    pass
+    
+def modifyBasket():
+    #여기에서 의미 규칙 판단 후 장바구니 수정
+    pass
 
+def updateOrderFile():
+    #주문한 내역 order.txt 파일에 저장
+    pass
     
 # main 함수
 
@@ -97,8 +107,8 @@ def main():
 
         while True:
             date = getDate()
-            if(checkDate(date)==1): break;
-            # 올바른 날짜 입력시까지 입력 계속 받음
+            if(checkDate(date)==1):  # 올바른 날짜 입력시까지 입력 계속 받음
+                break;
             
         while True:  # 모드 프롬프트
             user_id = input() # 유저아이디 입력
@@ -116,13 +126,16 @@ def main():
                 elif ret2 == 5:  # 결제하기 선택시
                     ret4 = payment(basket)
                     if ret4 == 1:  # 결제 완료되면
+                        updateOrderFile() # 주문 파일 업데이트
                         updateStockFile()  # 재고 파일 업데이트
                         main()  # main 재귀호출
                         exit()
                 elif ret2 == 4: # 장바구니 수정시
-                    showBasket()
-
-                    
+                    while True: 
+                        ret5 == showBasket()
+                        modifyBasket(ret5) # 장바구니 담을때 주문가능 개수가 변동되는 경우 복구까지
+                        if ret5==0:
+                            break
                     
                 else:  # ret2 == 1, 2, or 3
                     while True:  # 장바구니 프롬프트
