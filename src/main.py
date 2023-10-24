@@ -60,6 +60,8 @@ def getFoodList():
     # 확인용
     print(foodList[3].recipe)
 
+    foodTxt.close()
+
 
 def getStockDict():
     try:
@@ -85,6 +87,9 @@ def getStockDict():
 
     # 확인용
     print(stockDict)
+
+    stockTxt.close()
+
 
 class MyCustomError(Exception):
     def __init__(self, message):
