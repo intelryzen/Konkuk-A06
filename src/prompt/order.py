@@ -34,19 +34,8 @@ def chooseMenu():
 def payment(basketObject):
     from main import foodList
     if basketObject.totalPrice > 0:
-        for item in basketObject.basket:
-            # 음식 고유번호
-            index = item[0]
-            # 담은수량 고유번호
-            amount = item[1]
-            food = next((food for food in foodList if food.no == index), None)
-            # 사실상 None 일 경우 없음.
-            if food == None:
-                continue
-            else:
-                # 장바구니 아이템 출력
-                print(f"{food.name}: {amount}개")
-        print(f"총 금액 : {basketObject.totalPrice}")
+        basketObject.show()
+        print(f"총 금액 : ₩{basketObject.totalPrice}")
         print(f'결제가 완료되었습니다.')
         return 1
     else:
