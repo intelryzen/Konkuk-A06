@@ -90,6 +90,7 @@ def updateStockFile():
                 stockNo = int(data[0])
                 # 파싱한 데이터 업데이트
                 data[2] = str(stockDict[stockNo])
+                # 재고 갯수만 수정하여 다시 묶음
                 newStockTxt += '\t'.join(data) + '\n'
             except:
                 raise MyCustomError(
@@ -109,6 +110,7 @@ def updateStockFile():
 
 
 def updateOrderFile(basket):
+    #기존 주문 내용 확인
     try:
         with open(orderFilePath, 'r', encoding='UTF8') as file_data:
             originOrderTxt = file_data.read()
@@ -118,6 +120,7 @@ def updateOrderFile(basket):
     # 우선 유저 이름 및 날자 임의로 세팅
     newOrderTxt = '홍길동' + '\t' + '2023.10.26'
 
+    #장바구니 내의 음식 데이터 추가
     for item in basket:
         newOrderTxt += '\t'
         selectedFood = next(
@@ -125,13 +128,15 @@ def updateOrderFile(basket):
         if selectedFood:
             newOrderTxt += selectedFood.name + '\t' + str(item[1]) + '\t' + str(selectedFood.price * item[1])
 
+    #끝 구분자 추가
     newOrderTxt += '\t#'
+    #기존 주문기록이 날아가지 않게 이어서 작성
     newOrderTxt = originOrderTxt + '\n' + newOrderTxt
 
     try:
-        stockTxt = open(orderFilePath, 'w', encoding='UTF8')
-        stockTxt.write(newOrderTxt)
-        stockTxt.close()
+        orderTxt = open(orderFilePath, 'w', encoding='UTF8')
+        orderTxt.write(newOrderTxt)
+        orderTxt.close()
     except:
         raise MyCustomError("파일 쓰기에 실패했습니다.")
 
