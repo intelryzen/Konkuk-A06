@@ -1,5 +1,5 @@
 
-from model import *
+from ..model import *
 
 
 def showMenu():
@@ -32,7 +32,7 @@ def chooseMenu():
 
 
 def payment(basketObject):
-    from main import foodList
+    from chicken import foodList
     if basketObject.totalPrice > 0:
         basketObject.show()
         print(f"총 금액 : ₩{basketObject.totalPrice}")

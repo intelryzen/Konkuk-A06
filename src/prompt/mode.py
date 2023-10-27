@@ -7,9 +7,9 @@ showMenu 를 호출하고 사용자의 입력을 받아 PromptSyntaxChecker.chec
 
 """
 # import PromptSyntaxChecker
-from model import *
-from res import *
 from datetime import datetime
+from ..model import *
+from res import *
 
 
 def showMode():

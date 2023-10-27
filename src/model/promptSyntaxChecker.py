@@ -1,4 +1,4 @@
-from model.customError import MyCustomError
+from .customError import MyCustomError
 
 
 class PromptSyntaxChecker:

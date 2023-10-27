@@ -1,5 +1,5 @@
-from model import PromptSyntaxChecker
-from prompt import updateStockDict
+from ..model import PromptSyntaxChecker
+from .basket import updateStockDict
 from res import foodList
 # 1(뒤로가기 또는 장바구니가 비었을 때) 또는 0
 

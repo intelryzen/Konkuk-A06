@@ -1,5 +1,5 @@
 from res import foodList
-from model import MyCustomError
+from .customError import MyCustomError
 
 
 class ShoppingBasket:
