@@ -11,9 +11,12 @@ from model import *
 from res import *
 from datetime import datetime
 
+
 def showMode():
     print("1. 음식주문")
     print("2. 종료")
+
+
 def chooseMode():
     showMode()
     menu = input()
@@ -28,6 +31,7 @@ def chooseMode():
     # else:
     #     print(syntex)?
     # chooseMode()
+
 
 def inputUserDate():
     """
@@ -47,13 +51,16 @@ def inputUserDate():
     2012.12.25(스페이스바) TRUE
 
     """
-    
+
     while True:
         try:
             inputDate = input("날짜를 YYYY.MM.DD 형식으로 입력하세요: ")
             # 스페이스바 파싱
             inputDate = inputDate.replace(" ", "")
 
+            # inputDate 는 반드시 10글자여야 함.
+            if len(inputDate) != 10:
+                raise MyCustomError("YYYY.MM.DD 형식으로 작성해주세요.")
 
             # 입력된 문자열을 날짜로 파싱합니다.
             try:
@@ -67,14 +74,15 @@ def inputUserDate():
                 # checkValidDate = True
             else:
                 raise MyCustomError("년도는 2000년부터 2100년까지 가능합니다.")
-            
+
         except Exception as e:
             print(e)
             continue
-        
+
         # 날짜 까지만 반환
         inputDate = inputDate.date()
-        return inputDate
+        return str(inputDate)
+
 
 def getUserId():
     """
@@ -105,15 +113,14 @@ def getUserId():
             # 입력받은 아이디에 공백 문자가 있는지 확인합니다.
             if any(char.isspace() for char in inputUserId):
                 raise MyCustomError("아이디에 공백이 포함되어 있습니다. 다시 입력하세요.")
-            elif len(inputUserId) == 0:
-                raise MyCustomError("아무런 입력도 하지 않으셨습니다. 아이디를 입력하세요.")
+            elif len(inputUserId) < 3:
+                raise MyCustomError("아이디는 3글자 이상이어야 합니다.")
             else:
                 return inputUserId
-            
+
         except Exception as e:
             print(e)
             continue
-    
 
 
 if __name__ == "__main__":
@@ -123,5 +130,3 @@ if __name__ == "__main__":
         print(response)
         # inputUserId = getUserId()
         # print(inputUserId)
-
-
