@@ -26,7 +26,7 @@ def chooseMode():
     elif menu == '2':
         return 2
     else:
-        chooseMode()
+        return chooseMode()
     # else:
     #     print(syntex)?
     # chooseMode()
