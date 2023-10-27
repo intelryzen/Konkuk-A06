@@ -4,7 +4,6 @@ from model import *
 from prompt import *
 import copy
 
-
 def getFoodList():
     global foodList
     # 결제 후 다시 호출될 수 있어서 list 를 항상 비워주어야 함
@@ -73,6 +72,7 @@ def getStockDict():
 
     stockTxt.close()
 
+
 def updateStockFile():
     newStockTxt = ''
 
@@ -110,28 +110,33 @@ def updateStockFile():
 
 
 def updateOrderFile(basket):
-    #기존 주문 내용 확인
+    # 기존 주문 내용 확인
     try:
-        with open(orderFilePath, 'r', encoding='UTF8') as file_data:
+        with open(orderFilePath, 'a+', encoding='UTF8') as file_data:
+            file_data.seek(0)
             originOrderTxt = file_data.read()
     except:
         raise MyCustomError("파일 읽기에 실패했습니다.")
 
     # 우선 유저 이름 및 날자 임의로 세팅
-    newOrderTxt = '홍길동' + '\t' + '2023.10.26'
+    newOrderTxt = basket.user_id + '\t' + basket.today_date
 
-    #장바구니 내의 음식 데이터 추가
-    for item in basket:
+    # 장바구니 내의 음식 데이터 추가
+    for item in basket.basket:
         newOrderTxt += '\t'
         selectedFood = next(
             (food for food in foodList if food.no == item[0]), None)
         if selectedFood:
-            newOrderTxt += selectedFood.name + '\t' + str(item[1]) + '\t' + str(selectedFood.price * item[1])
+            newOrderTxt += selectedFood.name + '\t' + \
+                str(item[1]) + '\t' + str(selectedFood.price * item[1])
 
-    #끝 구분자 추가
+    # 끝 구분자 추가
     newOrderTxt += '\t#'
-    #기존 주문기록이 날아가지 않게 이어서 작성
-    newOrderTxt = originOrderTxt + '\n' + newOrderTxt
+    # 기존 주문기록이 날아가지 않게 이어서 작성
+    if originOrderTxt == '':
+        newOrderTxt = newOrderTxt
+    else:
+        newOrderTxt = originOrderTxt + '\n' + newOrderTxt
 
     try:
         orderTxt = open(orderFilePath, 'w', encoding='UTF8')
@@ -139,8 +144,6 @@ def updateOrderFile(basket):
         orderTxt.close()
     except:
         raise MyCustomError("파일 쓰기에 실패했습니다.")
-
-
 
 
 def exit():
@@ -159,12 +162,12 @@ def main():
             print(e)  # 파일이 무효하면 프로그램 종료
             exit()
 
-        
         date = inputUserDate()  # 날짜 입력
         user_id = getUserId()  # 유저아이디 입력
 
         while True:  # 모드 프롬프트
-            basket = ShoppingBasket()  # user_id, date로 인자로 basket 생성
+            # user_id, date로 인자로 basket 생성
+            basket = ShoppingBasket(today_date=date, user_id=user_id)
 
             ret1 = chooseMode()
             if ret1 == 2:  # 종료 선택시
@@ -180,7 +183,7 @@ def main():
                 elif ret2 == 5:  # 결제하기 선택시
                     ret4 = payment(basket)
                     if ret4 == 1:  # 결제 완료되면
-                        updateOrderFile(basket.basket)  # 주문 파일 업데이트
+                        updateOrderFile(basket)  # 주문 파일 업데이트
                         updateStockFile()  # 재고 파일 업데이트
                         main()  # main 재귀호출
                         exit()
