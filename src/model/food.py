@@ -8,4 +8,4 @@ class Food:
         self.orderable = 0  # 주문 가능한 갯수
 
     def __str__(self):
-        return f"{self.name}: ₩{self.price} (가능 수량: {self.orderable})"
+        return f"{self.name}: ₩{self.price} (가능 수량: {self.orderable}개)"

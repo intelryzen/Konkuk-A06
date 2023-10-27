@@ -118,13 +118,10 @@ def main():
                         main()  # main 재귀호출
                         exit()
                 elif ret2 == 4:  # 장바구니 수정시
-                    print("미구현")
-                #     while True:
-                #         ret5 == showBasket()
-                #         modifyBasket(ret5)  # 장바구니 담을때 주문가능 개수가 변동되는 경우 복구까지
-                #         if ret5 == 0:
-                #             break
-
+                    while True:
+                        ret5 = modifyBasket(basket)
+                        if ret5 == 1:
+                            break
                 else:  # ret2 == 1, 2, or 3
                     while True:  # 장바구니 프롬프트
                         updateFoodList()  # 주문 가능 음식 개수 수정
