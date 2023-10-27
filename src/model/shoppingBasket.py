@@ -7,7 +7,9 @@ class ShoppingBasket:
     여기에 ShoppingBasket 클래스 정의
     """
 
-    def __init__(self):
+    def __init__(self, user_id, today_date):
+        self.user_id = user_id
+        self.today_date = today_date
         self.basket = []  # [음식번호, 수량]을 원소로 가지는 리스트
         self.totalPrice = 0  # basket에 들어있는 음식의 총 가격합임. 값이 0 이면 장바구니가 비었음을 의미함.
 
