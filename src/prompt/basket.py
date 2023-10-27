@@ -5,7 +5,6 @@ from res import *
 231022 원규연
 update foodlist 
 """
-
 """
 class Food:
     def __init__(self, no, foodTypeNo, name, price, recipe, orderable):
@@ -51,11 +50,15 @@ def updateFoodList():
         food.orderable = enableNumber
 
 
-def updateStockDict(user_selected_food, number):
+def updateStockDict(user_selected_food, number, restore=False):
     '''재고 업데이트'''
-    for stock_number, amount in user_selected_food.recipe.items():
-        stockDict[stock_number] = stockDict[stock_number] - \
-            amount*number
+    if restore:
+        for key, value in user_selected_food.recipe.items():
+            stockDict[key] = (stockDict[key] + value*number)
+    else:
+        for stock_number, amount in user_selected_food.recipe.items():
+            stockDict[stock_number] = stockDict[stock_number] - \
+                amount*number
 
 
 def insertBasket(foodType, basketObject):
