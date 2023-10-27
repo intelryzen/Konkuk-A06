@@ -18,6 +18,7 @@ def main():
             print(e)  # 파일이 무효하면 프로그램 종료
             exit()
 
+        # 정보 프롬프트
         date = inputUserDate()  # 날짜 입력
         user_id = getUserId()  # 유저아이디 입력
 
