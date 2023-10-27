@@ -159,11 +159,9 @@ def main():
             print(e)  # 파일이 무효하면 프로그램 종료
             exit()
 
-        # while True:
-        #     date = getDate()
-        #     if (checkDate(date) == 1):  # 올바른 날짜 입력시까지 입력 계속 받음
-        #         break
-        # user_id = input()  # 유저아이디 입력
+        
+        date = inputUserDate()  # 날짜 입력
+        user_id = getUserId()  # 유저아이디 입력
 
         while True:  # 모드 프롬프트
             basket = ShoppingBasket()  # user_id, date로 인자로 basket 생성
