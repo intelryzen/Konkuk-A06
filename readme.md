@@ -8,7 +8,7 @@
 |  팀원    | 202011310    |  성현민  |
 
 ## 흐름도
-<img width="864" alt="flow" src="https://github.com/intelryzen/Konkuk-A06/assets/66426612/2021d18e-ea9e-4bd9-88f4-571d573e0497">
+![전기프 drawio](https://github.com/intelryzen/Konkuk-A06/assets/66426612/2824147a-3263-4987-a6fd-5dbb56563970)
 
 ## 1차 요구사항
 * 장바구니에 이미 담긴 것들 중 일부만 갯수를 줄일 (즉, 취소할) 수 있게 해주세요.
