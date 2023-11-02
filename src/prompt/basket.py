@@ -34,20 +34,26 @@ def updateFoodList():
     foodList = []
     stockDict = {}
     """
-    for food in foodList:
-        food.orderable = 0
-        enableNumber = 0
-        leastNumber = 0
+    try: 
+        for food in foodList:
+            food.orderable = 0
+            enableNumber = 0
+            leastNumber = 0
 
-        for recipeKey in food.recipe.keys():
-            leastNumber = stockDict[recipeKey] // food.recipe[recipeKey]
-            if stockDict[recipeKey] == 0:
-                enableNumber = 0
-                break
-            if enableNumber == 0 or leastNumber < enableNumber:
-                enableNumber = leastNumber
+            for recipeKey in food.recipe.keys():
+                # leastNumber = stockDict[recipeKey] // food.recipe[recipeKey]
+                leastNumber = stockDict.get(recipeKey, 0) // food.recipe[recipeKey]
+                # if stockDict[recipeKey] == 0:
+                if stockDict.get(recipeKey, 0) == 0:
+                    enableNumber = 0
+                    break
+                if enableNumber == 0 or leastNumber < enableNumber:
+                    enableNumber = leastNumber
 
-        food.orderable = enableNumber
+            food.orderable = enableNumber
+
+    except Exception as e:
+        print(e)
 
 
 def updateStockDict(user_selected_food, number, restore=False):
