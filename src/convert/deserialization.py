@@ -18,8 +18,18 @@ def getFoodList():
             try:
                 # 정수값으로 정의된것들 확인
                 foodNo = int(data[0])
+                if (foodNo < 1) :
+                    raise MyCustomError(
+                        f"{foodFilePath} {line_number + 1}번째줄 음식 번호를 확인해 주세요")
+
                 foodTypeNo = int(data[1])
+                if (foodTypeNo > 3 or foodTypeNo < 1) :
+                    raise MyCustomError(
+                        f"{foodFilePath} {line_number + 1}번째줄 음식 타입 번호를 확인해 주세요")
                 price = int(data[3])
+                if (price < 1) :
+                    raise MyCustomError(
+                        f"{foodFilePath} {line_number + 1}번째줄 음식 가격을 확인해 주세요")
                 # 음식명
                 name = data[2]
                 # str -> dic
