@@ -73,3 +73,4 @@ class ShoppingBasket:
                 selectedFood = next(
                     (food for food in foodList if food.no == food_no), None)
                 self.totalPrice -= selectedFood.price*canceled_quantity
+                return food_no

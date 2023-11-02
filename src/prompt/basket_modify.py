@@ -23,11 +23,11 @@ def modifyBasket(basket):
                 if selected == 0:
                     return 1
                 else:
-                    basket.remove(selected)
-                    # 여기로 넘어오면 바구니에 음식이 제대로 삭제된 상태
+                    food_no = basket.remove(selected)
+                    # 여기로 넘어오면 바구니에 음식이 제대로 삭제된 상태이며 삭제된 음식 고유 번호를 리턴
                     # 음식객체 가져오기
                     selectedFood = next(
-                        (food for food in foodList if food.no == selected[0]), None)
+                        (food for food in foodList if food.no == food_no), None)
                     # 재고 수 복구
                     updateStockDict(selectedFood, selected[1], restore=True)
 
