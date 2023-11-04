@@ -1,15 +1,13 @@
+from res import foodType
 from ..model import *
 
-
 def showMenu():
-    print(
-        '''0. 뒤로가기
-1. 메인메뉴
-2. 사이드메뉴
-3. 음료
+    print(f'''0. 뒤로가기
+1. {foodType[1]}
+2. {foodType[2]}
+3. {foodType[3]}
 4. 장바구니
 5. 결제하기''')
-
 
 # 유저가 선택한 메뉴 번호 반환
 def chooseMenu():
