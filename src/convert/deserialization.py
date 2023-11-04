@@ -34,6 +34,13 @@ def getFoodList():
                 name = data[2]
                 # str -> dic
                 recipe = eval(data[4])
+                for key, value in recipe.items():
+                    if (key < 1) :
+                        raise MyCustomError(
+                            f"{foodFilePath} {line_number + 1}번째줄 재료 번호를 확인해 주세요")
+                    if (value < 1) :
+                        raise MyCustomError(
+                            f"{foodFilePath} {line_number + 1}번째줄 재료 갯수를 확인해 주세요")
 
                 foodList.append(Food(foodNo, foodTypeNo, name, price, recipe))
 
@@ -75,6 +82,9 @@ def getStockDict():
         else:
             raise MyCustomError(
                 f"{stockFilePath} {line_number+1}번째줄 형식이 어긋남")
+
+    if (len(stockDict)) == 0 :
+        raise MyCustomError("재고가 없습니다.")
 
     # 확인용
     # print(stockDict)
