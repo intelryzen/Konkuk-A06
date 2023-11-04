@@ -47,8 +47,8 @@ def updateOrderFile(basket):
     except:
         raise MyCustomError("파일 읽기에 실패했습니다.")
 
-    # 우선 유저 이름 및 날자 임의로 세팅
-    newOrderTxt = basket.user_id + '\t' + basket.today_date
+    # 유저 이름 및 날자 세팅
+    newOrderTxt = basket.today_date + '\t' + basket.user_id
 
     # 장바구니 내의 음식 데이터 추가
     for item in basket.basket:
@@ -59,8 +59,6 @@ def updateOrderFile(basket):
             newOrderTxt += selectedFood.name + '\t' + \
                 str(item[1]) + '\t' + str(selectedFood.price * item[1])
 
-    # 끝 구분자 추가
-    newOrderTxt += '\t#'
     # 기존 주문기록이 날아가지 않게 이어서 작성
     if originOrderTxt == '':
         newOrderTxt = newOrderTxt
