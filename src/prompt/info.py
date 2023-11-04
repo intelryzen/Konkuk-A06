@@ -25,7 +25,7 @@ def inputUserDate():
         try:
             inputDate = input("날짜를 YYYY.MM.DD 형식으로 입력하세요: ")
             # 스페이스바 파싱
-            #inputDate = inputDate.replace(" ", "")
+            inputDate = inputDate.replace("\t", "aaaaaaaaaaaaaaaaaaaa") # 탭키 제거
             inputDate = inputDate.strip() # 구현검사중 수정
             
             # inputDate 는 반드시 10글자여야 함.
