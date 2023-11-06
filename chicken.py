@@ -50,7 +50,7 @@ def main():
                 elif ret2 == 4:  # 장바구니 수정시
                     while True:
                         ret5 = modifyBasket(basket)
-                        if ret5 == 1:
+                        if ret5 == 1: # 뒤로가기 또는 장바구니에 음식없으면
                             break
                 else:  # ret2 == 1, 2, or 3
                     while True:  # 장바구니 프롬프트
