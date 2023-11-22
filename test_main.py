@@ -30,8 +30,8 @@ def main():
         user_id = 'test'
 
         basket_temp1 = ShoppingBasket(today_date=date, user_id=user_id)
-        basket_temp1.add(foodList[0], 1)
-        basket_temp1.add(foodList[1], 1)
+        # basket_temp1.add(foodList[0], 1)
+        basket_temp1.add(foodList[4], 1)
 
         temp_point_list = [{'point': 3000, 'date': '2021-05-01'}, {'point': 5000, 'date': '2021-05-02'}]
         temp_coupon_list = [{'price': 1000, 'date': '2021-05-01', 'use': True}, 

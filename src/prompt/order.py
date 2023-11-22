@@ -57,20 +57,34 @@ def make_coupon_from_point(basketObject, userObject):
     for i in userObject.enablePoint_list:
         originPoint += i['point']
 
-    newPoint = basketObject.totalPrice + originPoint
+    newPoint = basketObject.totalPrice
+    pointSum = newPoint + originPoint
 
+    usePointSwitch = False
+    if pointSum >= 10000:
+        usePointSwitch = True
 
     # point로 쿠폰 발급
     # 기한은 1주일
-    while newPoint >= 10000:
-        newPoint -= 10000
+    while pointSum >= 10000:
+        pointSum -= 10000
         userObject.enableCoupon_list.append({'price': 1000, 'date': limitedDate, 'use': True})
 
-    for i in range(len(userObject.enablePoint_list)):
-        userObject.enablePoint_list[i]['point'] = 0
-        if userObject.enablePoint_list[i]['date'] == limitedDate:
-            del userObject.enablePoint_list[i]
-    userObject.enablePoint_list.append({'point': newPoint, 'date': limitedDate})
+    if usePointSwitch:
+        for i in range(len(userObject.enablePoint_list)):
+            userObject.enablePoint_list[i]['point'] = 0
+            if userObject.enablePoint_list[i]['date'] == limitedDate:
+                del userObject.enablePoint_list[i]
+        userObject.enablePoint_list.append({'point': pointSum, 'date': limitedDate})
+
+    else:
+        for i in range(len(userObject.enablePoint_list)):
+            if userObject.enablePoint_list[i]['date'] == limitedDate:
+                userObject.enablePoint_list[i]['point'] = newPoint
+                break
+        else:
+            userObject.enablePoint_list.append({'point': newPoint, 'date': limitedDate})
+    
 
 
 def selectCoupon(basketObject, userObject):
