@@ -151,7 +151,6 @@ def showMenu():
 3. 음료
 4. 장바구니
 5. 결제하기''')
->>>>>>> parent of 23a6cf9 (2차요구사항-1)
 
 # # 유저가 선택한 메뉴 번호 반환
 # def chooseMenu():
