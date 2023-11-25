@@ -1,3 +1,4 @@
+import fileinput
 from res import *
 from ..model.customError import MyCustomError
 
@@ -71,3 +72,41 @@ def updateOrderFile(basket):
         orderTxt.close()
     except:
         raise MyCustomError("파일 쓰기에 실패했습니다.")
+
+def updateUserCoupon(user_id, couponList):
+    try:
+        with fileinput.input(couponFilePath, inplace=True, encoding='UTF8') as f:
+            for line in f:
+                # user id 로 시작하는 행만 수정
+                # 앞부분이 겹치는 아이디 있을수 있으니 탭까지 검색
+                if line.startswith(user_id + '\t'):
+                    couponData = user_id + '\t'
+                    for index, coupon in couponList:
+                        couponData += coupon.price + '\t' + coupon.expiredDate + '\t' + coupon.isUsed
+                        # 마지막 쿠폰은 탭 없이
+                        if index != len(couponList) -1:
+                            couponData += '\t'
+                    print(couponData, end='\n')
+                else:
+                    print(line, end='')
+    except:
+        raise MyCustomError("파일 읽기에 실패했습니다.")
+
+def updateUserPoint(user_id, PointList):
+    try:
+        with fileinput.input(pointFilePath, inplace=True, encoding='UTF8') as f:
+            for line in f:
+                # user id 로 시작하는 행만 수정
+                # 앞부분이 겹치는 아이디 있을수 있으니 탭까지 검색
+                if line.startswith(user_id + '\t'):
+                    pointData = user_id + '\t'
+                    for index, point in PointList:
+                        pointData += point['price'] + '\t' + point['date']
+                        # 마지막 포인트는 탭 없이
+                        if index != len(PointList) -1:
+                            pointData += '\t'
+                    print(pointData, end='\n')
+                else:
+                    print(line, end='')
+    except:
+        raise MyCustomError("파일 읽기에 실패했습니다.")
