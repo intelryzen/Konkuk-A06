@@ -19,7 +19,8 @@ def main():
             exit()
 
         # 정보 프롬프트
-        date = inputUserDate()  # 날짜 입력
+        systemDate=getLatestDate("files/order.txt") # 주문내역내 가장 최근 날짜
+        date = inputUserDate(systemDate)  # 날짜 입력
         user_id = getUserId()  # 유저아이디 입력
 
         while True:  # 모드 프롬프트
@@ -44,9 +45,10 @@ def main():
                             updateOrderFile(basket)  # 주문 파일 업데이트
                             updateStockFile()  # 재고 파일 업데이트
                             main()  # main 재귀호출
+                            exit()
                         except Exception as e:
                             print(e)  # 파일오류
-                        exit()
+                            exit()
                 elif ret2 == 4:  # 장바구니 수정시
                     while True:
                         ret5 = modifyBasket(basket)
