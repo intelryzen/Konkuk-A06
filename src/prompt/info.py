@@ -1,8 +1,37 @@
 from datetime import datetime
 from ..model import *
+import re
+
+def refineDate(line):
+    match = re.search(r'\d{4}-\d{2}-\d{2}', line)
+    return match.group
+
+def getLatestDate(file_path):
+    """
+    order.txt가 있고, 내용이 있다면 가장 아랫줄의 날짜 읽어온다
+    order.txt가 있고, 내용이 없다면 아무 날짜나 허용한다.
+    order.txt가 없으면, 파일을 만들어야 하고, 아무 날짜나 허용한다
+    2000-01-01 이상만 다루므로 1000-01-01을 준다(datetime상에서 가장 작음) 
+    """
+    try:
+        dateTxt = open(file_path, 'r', encoding='UTF-8')
+        line = dateTxt.readlines()
+        if not line:
+            date = datetime.strptime("1000-01-01", "%Y-%m-%d")
+            dateTxt.close()
+            return date 
+        last_line=line[-1].strip()
+        date = last_line.split('\t')[0]
+        date = datetime.strptime(date, "%Y-%m-%d")
+        dateTxt.close()
+        return date
+    except FileNotFoundError:
+        date = datetime.strptime("1000-01-01", "%Y-%m-%d")
+        return date  # order.txt가 없음
 
 
-def inputUserDate():
+
+def inputUserDate(fileDate):
     """
     231026 원규연
     오류 메세지를 자세하게?
@@ -20,13 +49,12 @@ def inputUserDate():
     2012.12.25(스페이스바) TRUE
 
     """
-
     while True:
         try:
             inputDate = input("날짜를 YYYY.MM.DD 형식으로 입력하세요: ")
             # 스페이스바 파싱
             inputDate = inputDate.strip(' ') # 양끝 스페이스바만 허용. \t 이 있으면 오류를 발생해야함.
-            
+            inputDate = inputDate.replace(' ',"@") # 발표때 발견한 오류 조치
             # inputDate 는 반드시 10글자여야 함.
             if len(inputDate) != 10:
                 raise MyCustomError("YYYY.MM.DD 형식으로 작성해주세요.")
@@ -43,6 +71,11 @@ def inputUserDate():
                 # checkValidDate = True
             else:
                 raise MyCustomError("년도는 2000년부터 2100년까지 가능합니다.")
+            
+            if inputDate>=fileDate:
+                pass
+            else:
+                raise MyCustomError(str(fileDate.strftime("%Y-%m-%d")) + " 와 같거나 이후의 날짜로 입력해주세요.")
 
         except Exception as e:
             print(e)
@@ -51,6 +84,7 @@ def inputUserDate():
         # 날짜 까지만 반환
         inputDate = inputDate.date()
         return str(inputDate)
+
 
 
 def getUserId():
