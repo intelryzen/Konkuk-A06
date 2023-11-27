@@ -1,6 +1,8 @@
 from res import *
 from ..model.customError import MyCustomError
 from ..model.food import Food
+from ..model.coupon import Coupon
+from datetime import datetime
 
 
 def getFoodList():
@@ -90,3 +92,67 @@ def getStockDict():
     # print(stockDict)
 
     stockTxt.close()
+
+
+def getMyCouponList(user_id):
+    try:
+        couponTxt = open(couponFilePath, 'r', encoding='UTF8')
+    except:
+        raise MyCustomError("파일 읽기에 실패했습니다.")
+
+    couponList = []
+    line = couponTxt.readlines()
+    for line_number, couponInfo in enumerate(line):
+        data = couponInfo.strip().split('\t')
+        #닉네임이 같은 줄만 읽는다
+        if data[0] == user_id:
+            #3개씩 끊어서 변환
+            for i in range(1, len(data), 3):
+                checkDate(data[i+1])
+                couponList.append(Coupon(data[i], data[i+1], data[i+2]))
+            break
+
+    couponTxt.close()
+
+    return couponList
+
+def getMyPointList(user_id):
+    try:
+        pointTxt = open(pointFilePath, 'r', encoding='UTF8')
+    except:
+        raise MyCustomError("파일 읽기에 실패했습니다.")
+
+    pointList = []
+    line = pointTxt.readlines()
+    for line_number, pointInfo in enumerate(line):
+        data = pointInfo.strip().split('\t')
+        #닉네임이 같은 줄만 읽는다
+        if data[0] == user_id:
+            #2개씩 끊어서 변환
+            for i in range(1, len(data), 2):
+                checkDate(data[i+1])
+                pointList.append({'point': data[i], 'date': data[i+1]})
+            break
+
+    pointTxt.close()
+
+    return pointList
+
+#날짜 검증 부분
+def checkDate(inputDate):
+    # inputDate 는 반드시 10글자여야 함.
+    if len(inputDate) != 10:
+        raise MyCustomError("YYYY-MM-DD 형식이 아닙니다.")
+
+    # 입력된 문자열을 날짜로 파싱합니다.
+    try:
+        inputDate = datetime.strptime(inputDate, "%Y-%m-%d")
+    except Exception as e:
+        raise MyCustomError("유효하지 않은 날짜입니다.")
+    # checkValidDate = True
+
+    if 2000 <= inputDate.year <= 2100:
+        pass
+        # checkValidDate = True
+    else:
+        raise MyCustomError("년도는 2000년부터 2100년까지 가능합니다.")

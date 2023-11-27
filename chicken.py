@@ -9,6 +9,7 @@ import copy
 def main():
     global foodList
     global stockDict
+    # global user
     while True:
         try:
             getFoodList()  # food 역직렬화
@@ -21,6 +22,10 @@ def main():
         # 정보 프롬프트
         date = inputUserDate()  # 날짜 입력
         user_id = getUserId()  # 유저아이디 입력
+        pointList = getMyPointList(user_id) # 유저 아이디 기반으로 포인트 역직렬화
+        couponList = getMyCouponList(user_id) # 유저 아이디 기반으로 쿠폰 역직렬화
+
+        # user = User(user_id, date, pointList, couponList)
 
         while True:  # 모드 프롬프트
             # user_id, date로 인자로 basket 생성
