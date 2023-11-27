@@ -75,7 +75,7 @@ def inputUserDate(fileDate):
             if inputDate>=fileDate:
                 pass
             else:
-                raise MyCustomError(str(fileDate.strftime("%Y-%m-%d")) + " 와 같거나 이후의 날짜로 입력해주세요.")
+                raise MyCustomError(str(fileDate.strftime("%Y.%m.%d")) + " 와 같거나 이후의 날짜로 입력해주세요.")
 
         except Exception as e:
             print(e)
