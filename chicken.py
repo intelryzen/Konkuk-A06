@@ -18,7 +18,7 @@ def main():
         except Exception as e:
             print(e)  # 파일이 무효하면 프로그램 종료
             exit()
-        print("Dd")
+            
         # 정보 프롬프트
         systemDate=getLatestDate("files/order.txt") # 주문내역내 가장 최근 날짜
         date = inputUserDate(systemDate)  # 날짜 입력
@@ -26,11 +26,11 @@ def main():
         pointList = getMyPointList(user_id) # 유저 아이디 기반으로 포인트 역직렬화
         couponList = getMyCouponList(user_id) # 유저 아이디 기반으로 쿠폰 역직렬화
 
-        # user = User(user_id, date, pointList, couponList)
+        user = User(id=user_id, date=date, pointList=pointList, couponList=couponList)
 
         while True:  # 모드 프롬프트
             # user_id, date로 인자로 basket 생성
-            basket = ShoppingBasket(today_date=date, user_id=user_id)
+            basket = ShoppingBasket()
 
             ret1 = chooseMode()
             if ret1 == 2:  # 종료 선택시
@@ -44,10 +44,10 @@ def main():
                     stockDict.update(originStockDict)
                     break
                 elif ret2 == 5:  # 결제하기 선택시
-                    ret4 = payment(basket)
+                    ret4 = payment(basketObject=basket, userObject=user)
                     if ret4 == 1:  # 결제 완료되면
                         try:
-                            updateOrderFile(basket)  # 주문 파일 업데이트
+                            updateOrderFile(basket, user)  # 주문 파일 업데이트
                             updateStockFile()  # 재고 파일 업데이트
                             main()  # main 재귀호출
                         except Exception as e:

@@ -39,7 +39,7 @@ def updateStockFile():
         raise MyCustomError("파일 쓰기에 실패했습니다.")
 
 
-def updateOrderFile(basket):
+def updateOrderFile(basket, user):
     # 기존 주문 내용 확인
     try:
         with open(orderFilePath, 'a+', encoding='UTF8') as file_data:
@@ -49,7 +49,7 @@ def updateOrderFile(basket):
         raise MyCustomError("파일 읽기에 실패했습니다.")
 
     # 유저 이름 및 날자 세팅
-    newOrderTxt = basket.today_date + '\t' + basket.user_id
+    newOrderTxt = user.date + '\t' + user.id
 
     # 장바구니 내의 음식 데이터 추가
     for item in basket.basket:

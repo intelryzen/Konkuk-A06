@@ -55,7 +55,7 @@ def make_coupon_from_point(basketObject, userObject):
     #기존 point
     originPoint = 0
     for i in userObject.enablePoint_list:
-        originPoint += i['point']
+        originPoint += int(i['point'])
 
     newPoint = basketObject.totalPrice
     pointSum = newPoint + originPoint
@@ -117,16 +117,17 @@ def selectCoupon(basketObject, userObject):
 
         while True:
             # 디버깅용 print
-            print(f'사용 가능한 쿠폰 목록입니다.', userObject.enableCoupon_list)
-            print(f'사용 불가능한 쿠폰 목록입니다.', userObject.disableCoupon_list)
-            print(f'사용 가능한 포인트 목록입니다.', userObject.enablePoint_list)
-            print(f'사용 불가능한 포인트 목록입니다.', userObject.disablePoint_list)
+            # print(f'사용 가능한 쿠폰 목록입니다.', userObject.enableCoupon_list)
+            # print(f'사용 불가능한 쿠폰 목록입니다.', userObject.disableCoupon_list)
+            # print(f'사용 가능한 포인트 목록입니다.', userObject.enablePoint_list)
+            # print(f'사용 불가능한 포인트 목록입니다.', userObject.disablePoint_list)
 
-
-            
-            print(f'사용하실 쿠폰 개수를 입력하세요. (0 ~ {can_use_coupon_amount}) : ')
+            print(f'사용 가능한 쿠폰 목록입니다.')
             for i in range(len(userObject.enableCoupon_list)):
                 print(f'{i+1}. {userObject.enableCoupon_list[i]}')
+            
+            print(f'사용하실 쿠폰 개수를 입력하세요. (0 ~ {can_use_coupon_amount}) : ')
+          
             
             try:
                 # user = input()
@@ -137,8 +138,8 @@ def selectCoupon(basketObject, userObject):
                     return 1
                 elif selected <= len(userObject.enableCoupon_list):
                     while selected > 0:
-                        basketObject.totalPrice -= userObject.enableCoupon_list[selected-1]['price']
-                        userObject.enableCoupon_list[selected-1]['use'] = False
+                        basketObject.totalPrice -= userObject.enableCoupon_list[selected-1].price
+                        userObject.enableCoupon_list[selected-1].isUsed = 1
                         userObject.disableCoupon_list.append(userObject.enableCoupon_list[selected-1])
                         del userObject.enableCoupon_list[selected-1]                        
                         selected -= 1
@@ -196,22 +197,21 @@ def chooseMenu():
 #         print("장바구니에 음식이 없습니다.")
 #         return 0
 
-def payment(basketObject,userObject):
-    from chicken import foodList
+def payment(basketObject, userObject):
     if basketObject.totalPrice > 0:
         basketObject.show()
         print(f"총 금액 : ₩{basketObject.totalPrice}")
         if userObject.enableCoupon_list:
-            print(f'사용 가능한 쿠폰이 있습니다.')
+            # print(f'사용 가능한 쿠폰이 있습니다.')
             if selectCoupon(basketObject, userObject):
                 make_coupon_from_point(basketObject, userObject)
                 # 디버깅용 print
-                print(f'사용 가능한 쿠폰 목록입니다.', userObject.enableCoupon_list)
-                print(f'사용 불가능한 쿠폰 목록입니다.', userObject.disableCoupon_list)
-                print(f'사용 가능한 포인트 목록입니다.', userObject.enablePoint_list)
+                # print(f'사용 가능한 쿠폰 목록입니다.', userObject.enableCoupon_list)
+                # print(f'사용 불가능한 쿠폰 목록입니다.', userObject.disableCoupon_list)
+                # print(f'사용 가능한 포인트 목록입니다.', userObject.enablePoint_list)
                 print(f'사용 불가능한 포인트 목록입니다.', userObject.disablePoint_list)
-                # 디버깅용 print
-                print(f'결제가 완료되었습니다. 결제가격은 ₩{basketObject.totalPrice}입니다.')
+                # # 디버깅용 print
+                # print(f'결제가 완료되었습니다. 결제가격은 ₩{basketObject.totalPrice}입니다.')
                 return 1
             else:
                 return 0

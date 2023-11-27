@@ -1,6 +1,8 @@
+from datetime import datetime, timedelta
+
 """
 user.py로 할라다가 user라는 이름이 뭔가 오류가 생길수도 있을 것 같아서
-임의로 userr.py로 이름을 변경
+임의로 user.py로 이름을 변경
 
 """
 
@@ -16,6 +18,8 @@ class User:
         self.enablePoint_list, self.disablePoint_list = sorting_enablePoint(self.pointList, self.date)
         self.couponList = couponList #dict가 모인 list 라고 가정
         self.enableCoupon_list, self.disableCoupon_list = sorting_enableCoupon(self.couponList, self.date)
+        # print(self.couponList[-1])
+        # print(sorting_enableCoupon(self.couponList, self.date))
         
         """
         pointList = [
@@ -64,8 +68,16 @@ def sorting_enablePoint(pointList, date):
     """
     enablePointList = []
     disablePointList = []
+    
     for i in pointList:
-        if i['date'] >= date:
+        # 현재 날짜
+        current_date = datetime.strptime(date, '%Y-%m-%d')
+        coupon_date = datetime.strptime(i['date'], '%Y-%m-%d')
+        
+        # 7일 이내인지 확인
+        is_within_7_days = (current_date - coupon_date) <= timedelta(days=7)
+
+        if is_within_7_days:
             enablePointList.append(i)
         else:
             disablePointList.append(i)
@@ -80,17 +92,16 @@ def sorting_enableCoupon(couponList, date):
     나누고 sorting까지 해줌
 
     """
-
-
     enableCouponList = []
     disableCouponList = []
+
     for i in couponList:
-        if i['date'] >= date and i['use'] == True:
+        if i.expiredDate >= date and i.isUsed == 0:
             enableCouponList.append(i)
         else:
             disableCouponList.append(i)
-    enableCouponList.sort(key=lambda x: x['date'])
-    enableCouponList.sort(key=lambda x: x['use'], reverse=True)
-    disableCouponList.sort(key=lambda x: x['date'])
-    disableCouponList.sort(key=lambda x: x['use'], reverse=True)
+    enableCouponList.sort(key=lambda x: x.expiredDate)
+    enableCouponList.sort(key=lambda x: x.isUsed, reverse=True)
+    disableCouponList.sort(key=lambda x: x.expiredDate)
+    disableCouponList.sort(key=lambda x: x.isUsed, reverse=True)
     return enableCouponList, disableCouponList
