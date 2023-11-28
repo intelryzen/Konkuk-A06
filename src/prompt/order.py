@@ -64,7 +64,10 @@ def make_coupon_from_point(basketObject, userObject):
 
     newPoint = basketObject.totalPrice
     pointSum = newPoint + originPoint
-
+    # print(newPoint)
+    # print(originPoint)
+    # print(userObject.enablePoint_list)
+    
     usePointSwitch = False
     if pointSum >= 10000:
         usePointSwitch = True
@@ -86,10 +89,12 @@ def make_coupon_from_point(basketObject, userObject):
     else:
         for i in range(len(userObject.enablePoint_list)):
             if userObject.enablePoint_list[i]['date'] == limitedDate:
-                userObject.enablePoint_list[i]['point'] = newPoint
+                userObject.enablePoint_list[i]['point'] = int(userObject.enablePoint_list[i]['point']) + newPoint 
                 break
         else:
-            userObject.enablePoint_list.append({'point': newPoint, 'date': limitedDate})
+                userObject.enablePoint_list.append({'point': newPoint, 'date': limitedDate})
+    # print(userObject.enablePoint_list)
+    
     
 
 
@@ -142,9 +147,12 @@ def selectCoupon(basketObject, userObject):
                 # syntexChecker = PromptSyntaxChecker(user)
                 # selected = syntexChecker.checkDefaultSyntax()
                 selected = int(input())
+                
+                # k = 0 (결제 완료)
                 if selected == 0:
                     return 1
-                elif 0 < selected <= len(userObject.enableCoupon_list):
+                # 0 < k <= n (결제 완료)
+                elif 0 < selected <= can_use_coupon_amount:
                     while selected > 0:
                         basketObject.totalPrice -= userObject.enableCoupon_list[selected-1].price
                         userObject.enableCoupon_list[selected-1].isUsed = 1
@@ -152,17 +160,22 @@ def selectCoupon(basketObject, userObject):
                         del userObject.enableCoupon_list[selected-1]                        
                         selected -= 1
                     return 1
-                elif (selected > len(userObject.enableCoupon_list)) or (selected < 0):
+                # n < k <= c
+                elif can_use_coupon_amount < selected <= len(userObject.enableCoupon_list):
                     print(f'진짜요?')
                     continue
-                # else:
-                #     print(f'뻥치지 마세요')
-                #     continue
+                # c < k
+                elif len(userObject.enableCoupon_list) < selected:
+                    print(f'뻥치지 마세요')
+                    continue
+                # selected < 0
+                else:
+                    print(f'잘못된 입력입니다')
+                    continue
 
                 
             except Exception as e:
-                # print(e) # 디버깅용
-                print(f'뻥치지 마세요')
+                print(e) # 디버깅용
                 continue    
 
 
