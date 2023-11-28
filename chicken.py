@@ -49,6 +49,8 @@ def main():
                         try:
                             updateOrderFile(basket, user)  # 주문 파일 업데이트
                             updateStockFile()  # 재고 파일 업데이트
+                            updateUserPoint(user.id, user.pointList) # 포인트 파일 업데이트
+                            updateUserCoupon(user.id, user.couponList) # 쿠폰 파일 업데이트
                             main()  # main 재귀호출
                         except Exception as e:
                             print(e)  # 파일오류

@@ -29,7 +29,7 @@ def main():
         date  = '2021-05-02'
         user_id = 'test'
 
-        basket_temp1 = ShoppingBasket(today_date=date, user_id=user_id)
+        basket_temp1 = ShoppingBasket()
         # basket_temp1.add(foodList[0], 1)
         basket_temp1.add(foodList[4], 1)
 

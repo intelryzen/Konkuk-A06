@@ -10,6 +10,9 @@ class User:
     """
     임의의 user class
     필요 매개변수: id, 주문날짜, pointList, coupon, 
+
+    couponList는 dict가 모인 list라고 가정 이었는데
+    class object가 모인 list로 변경
     """
     def __init__(self, id, date, pointList, couponList):
         self.id = id
@@ -72,12 +75,13 @@ def sorting_enablePoint(pointList, date):
     for i in pointList:
         # 현재 날짜
         current_date = datetime.strptime(date, '%Y-%m-%d')
-        coupon_date = datetime.strptime(i['date'], '%Y-%m-%d')
+        coupon_date = datetime.strptime(i['date'], '%Y-%m-%d') # 쿠폰 유효기간
         
-        # 7일 이내인지 확인
-        is_within_7_days = (current_date - coupon_date) <= timedelta(days=7)
+        # 7일 이내인지 확인 (현재일보다 만료일이 8일 뒤라면 잘못된 쿠폰)
+        #  추가로 current_date가 coupon_date보다 뒤인지 확인
+        enable_condition = ((coupon_date - current_date) <= timedelta(days=8)) and ((coupon_date - current_date) >= timedelta(days=0))
 
-        if is_within_7_days:
+        if enable_condition:
             enablePointList.append(i)
         else:
             disablePointList.append(i)
@@ -95,8 +99,12 @@ def sorting_enableCoupon(couponList, date):
     enableCouponList = []
     disableCouponList = []
 
+    date = datetime.strptime(date, '%Y-%m-%d')
+
     for i in couponList:
-        if i.expiredDate >= date and i.isUsed == 0:
+        # 현재일보다 만료일이 8일 뒤라면 잘못된 쿠폰
+        locallexpiredDate = datetime.strptime(i.expiredDate, '%Y-%m-%d')
+        if (date + timedelta(days=8)) >= locallexpiredDate >= date and i.isUsed == 0:
             enableCouponList.append(i)
         else:
             disableCouponList.append(i)
