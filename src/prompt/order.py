@@ -175,7 +175,8 @@ def selectCoupon(basketObject, userObject):
 
                 
             except Exception as e:
-                print(e) # 디버깅용
+                # print(e) # 디버깅용
+                print(f'잘못된 입력입니다')
                 continue    
 
 
