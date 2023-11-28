@@ -34,6 +34,11 @@ variableCouponList에다가 쿠폰 추가해주면 되고
 
 def make_coupon_from_point(basketObject, userObject):
     """
+    231128
+    여기가 지금 dict라서 문제가 생기는거 같음
+    class object로 바꿔야할듯
+
+    ====================
     point로 쿠폰 발급
     총 결제액 = point로 변환 후 10000포인트 당 1000원 쿠폰 발급
     쿠폰 발급 후 쿠폰 유효기간은 1주일
@@ -68,7 +73,8 @@ def make_coupon_from_point(basketObject, userObject):
     # 기한은 1주일
     while pointSum >= 10000:
         pointSum -= 10000
-        userObject.enableCoupon_list.append({'price': 1000, 'date': limitedDate, 'use': True})
+        coupon = Coupon(1000, limitedDate, 0)
+        userObject.enableCoupon_list.append(coupon)
 
     if usePointSwitch:
         for i in range(len(userObject.enablePoint_list)):
@@ -116,9 +122,11 @@ def selectCoupon(basketObject, userObject):
     if len(userObject.enableCoupon_list) > 0:
 
         while True:
-            # 디버깅용 print
-            # print(f'사용 가능한 쿠폰 목록입니다.', userObject.enableCoupon_list)
-            # print(f'사용 불가능한 쿠폰 목록입니다.', userObject.disableCoupon_list)
+            # # 디버깅용 print
+            # for coupon in userObject.enableCoupon_list:
+            #     print('사용 가능한 쿠폰 목록입니다.', coupon.price, coupon.expiredDate, coupon.isUsed)
+            # for coupon in userObject.disableCoupon_list:
+            #     print('사용 불가능한 쿠폰 목록입니다.', coupon.price, coupon.expiredDate, coupon.isUsed)
             # print(f'사용 가능한 포인트 목록입니다.', userObject.enablePoint_list)
             # print(f'사용 불가능한 포인트 목록입니다.', userObject.disablePoint_list)
 
@@ -136,7 +144,7 @@ def selectCoupon(basketObject, userObject):
                 selected = int(input())
                 if selected == 0:
                     return 1
-                elif selected <= len(userObject.enableCoupon_list):
+                elif 0 < selected <= len(userObject.enableCoupon_list):
                     while selected > 0:
                         basketObject.totalPrice -= userObject.enableCoupon_list[selected-1].price
                         userObject.enableCoupon_list[selected-1].isUsed = 1
@@ -144,7 +152,7 @@ def selectCoupon(basketObject, userObject):
                         del userObject.enableCoupon_list[selected-1]                        
                         selected -= 1
                     return 1
-                elif selected > len(userObject.enableCoupon_list):
+                elif (selected > len(userObject.enableCoupon_list)) or (selected < 0):
                     print(f'진짜요?')
                     continue
                 # else:
@@ -153,7 +161,7 @@ def selectCoupon(basketObject, userObject):
 
                 
             except Exception as e:
-                print(e) # 디버깅용
+                # print(e) # 디버깅용
                 print(f'뻥치지 마세요')
                 continue    
 
@@ -197,6 +205,31 @@ def chooseMenu():
 #         print("장바구니에 음식이 없습니다.")
 #         return 0
 
+# region new
+
+def combinePointCoupon(userObject):
+    """
+    point와 coupon을 합친 list를 반환
+    """
+    combinedPointList = []
+    combinedCouponList = []
+
+    for i in userObject.enablePoint_list:
+        combinedPointList.append(i)
+    for i in userObject.disablePoint_list:
+        combinedPointList.append(i)
+    for i in userObject.enableCoupon_list:
+        combinedCouponList.append(i)
+    for i in userObject.disableCoupon_list:
+        combinedCouponList.append(i)
+
+    userObject.pointList = combinedPointList
+    userObject.couponList = combinedCouponList
+    
+
+# endregion new
+
+
 def payment(basketObject, userObject):
     if basketObject.totalPrice > 0:
         basketObject.show()
@@ -205,18 +238,30 @@ def payment(basketObject, userObject):
             # print(f'사용 가능한 쿠폰이 있습니다.')
             if selectCoupon(basketObject, userObject):
                 make_coupon_from_point(basketObject, userObject)
-                # 디버깅용 print
+
+                # # 디버깅용 print
+                # for coupon in userObject.enableCoupon_list:
+                #     print('사용 가능한 쿠폰 목록입니다.', coupon.price, coupon.expiredDate, coupon.isUsed)
+                # for coupon in userObject.disableCoupon_list:
+                #     print('사용 불가능한 쿠폰 목록입니다.', coupon.price, coupon.expiredDate, coupon.isUsed)
+                # print(f'사용 가능한 포인트 목록입니다.', userObject.enablePoint_list)
+                # print(f'사용 불가능한 포인트 목록입니다.', userObject.disablePoint_list)
+
                 # print(f'사용 가능한 쿠폰 목록입니다.', userObject.enableCoupon_list)
                 # print(f'사용 불가능한 쿠폰 목록입니다.', userObject.disableCoupon_list)
                 # print(f'사용 가능한 포인트 목록입니다.', userObject.enablePoint_list)
-                print(f'사용 불가능한 포인트 목록입니다.', userObject.disablePoint_list)
+                # print(f'사용 불가능한 포인트 목록입니다.', userObject.disablePoint_list)
+                
                 # # 디버깅용 print
                 # print(f'결제가 완료되었습니다. 결제가격은 ₩{basketObject.totalPrice}입니다.')
+                combinePointCoupon(userObject)
+                # print(f'전체 포인트 목록입니다.', userObject.pointList)
                 return 1
             else:
                 return 0
         else:
             make_coupon_from_point(basketObject, userObject)
+            combinePointCoupon(userObject)
             print(f'사용 가능한 쿠폰이 없습니다.')
             print(f'결제가 완료되었습니다.')
             return 1
