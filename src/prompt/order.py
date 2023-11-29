@@ -32,7 +32,7 @@ variableCouponList에다가 쿠폰 추가해주면 되고
 """
 
 
-def make_coupon_from_point(basketObject, userObject):
+def makeCouponFromPoint(basketObject, userObject):
     """
     231128
     여기가 지금 dict라서 문제가 생기는거 같음
@@ -98,12 +98,10 @@ def make_coupon_from_point(basketObject, userObject):
     
 
 
-def selectCoupon(basketObject, userObject):
+def chooseCoupon(basketObject, userObject):
     """
     쿠폰 선택
     쿠폰 선택시 총 금액에서 쿠폰 가격만큼 차감
-    쿠폰 적용시 주문 금액이 0원 이하가 되면 해당 쿠폰사용을 마지막으로 종료
-    쿠폰은 반복해서 사용 가능 
 
     예를 들어, 쿠폰 액면가가 1000원이고 쿠폰을 5개 가지고있고 지금 2700원을 결제하려는 상황이면, 보유 쿠폰 목록에는 5개의 쿠폰들이 모두 출력되지만, 프롬프트에는:
 
@@ -250,8 +248,8 @@ def payment(basketObject, userObject):
         print(f"총 금액 : ₩{basketObject.totalPrice}")
         if userObject.enableCoupon_list:
             # print(f'사용 가능한 쿠폰이 있습니다.')
-            if selectCoupon(basketObject, userObject):
-                make_coupon_from_point(basketObject, userObject)
+            if chooseCoupon(basketObject, userObject):
+                makeCouponFromPoint(basketObject, userObject)
 
                 # # 디버깅용 print
                 # for coupon in userObject.enableCoupon_list:
@@ -274,7 +272,7 @@ def payment(basketObject, userObject):
             else:
                 return 0
         else:
-            make_coupon_from_point(basketObject, userObject)
+            makeCouponFromPoint(basketObject, userObject)
             combinePointCoupon(userObject)
             print(f'사용 가능한 쿠폰이 없습니다.')
             print(f'결제가 완료되었습니다.')
