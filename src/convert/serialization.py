@@ -57,7 +57,7 @@ def updateOrderFile(basket, user):
         selectedFood = next(
             (food for food in foodList if food.no == item[0]), None)
         if selectedFood:
-            newOrderTxt += selectedFood.name + '\t' + \
+            newOrderTxt += str(selectedFood.no) + '\t' + selectedFood.name + '\t' + \
                 str(item[1]) + '\t' + str(selectedFood.price * item[1])
 
     # 기존 주문기록이 날아가지 않게 이어서 작성
