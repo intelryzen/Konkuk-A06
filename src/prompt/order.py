@@ -265,7 +265,7 @@ def payment(basketObject, userObject):
                 # print(f'사용 불가능한 포인트 목록입니다.', userObject.disablePoint_list)
                 
                 # # 디버깅용 print
-                # print(f'결제가 완료되었습니다. 결제가격은 ₩{basketObject.totalPrice}입니다.')
+                print(f'결제가 완료되었습니다. 결제가격은 ₩{basketObject.totalPrice}입니다.')
                 combinePointCoupon(userObject)
                 # print(f'전체 포인트 목록입니다.', userObject.pointList)
                 return 1
@@ -275,7 +275,7 @@ def payment(basketObject, userObject):
             makeCouponFromPoint(basketObject, userObject)
             combinePointCoupon(userObject)
             print(f'사용 가능한 쿠폰이 없습니다.')
-            print(f'결제가 완료되었습니다.')
+            print(f'결제가 완료되었습니다. 결제가격은 ₩{basketObject.totalPrice}입니다.')
             return 1
     else:
         print("장바구니에 음식이 없습니다.")
