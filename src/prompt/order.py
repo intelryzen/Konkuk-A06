@@ -54,7 +54,7 @@ def makeCouponFromPoint(basketObject, userObject):
     포인트가 사용됐다면 pointList 갱신
     """
 
-    limitedDate = datetime.strptime(userObject.date, '%Y-%m-%d') + timedelta(days=7)
+    limitedDate = datetime.strptime(userObject.date, '%Y-%m-%d') + timedelta(days=6)
     limitedDate = limitedDate.strftime('%Y-%m-%d')
 
     #기존 point
